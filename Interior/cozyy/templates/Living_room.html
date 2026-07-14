@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Living Room Portfolio | Cozy Designs{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'cozyy/Kitchen.css' %}">{% endblock %}
+{% block content %}
+    <section class="portfolio-intro">
+        <div class="container">
+            <h1>Living Room Inspirations</h1>
+            <p>Explore our curated gallery of modern luxury, custom statement structures, and warm family sanctuaries.</p>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All Projects</button>
+                <button class="filter-btn" data-filter="modern-luxury">Modern Luxury</button>
+                <button class="filter-btn" data-filter="minimalist">Minimalist</button>
+                <button class="filter-btn" data-filter="cultural-statement">Cultural Statement</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-grid-section">
+        <div class="container">
+            <div class="portfolio-grid">
+
+                <div class="project-card" data-category="modern-luxury">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/living_room1.jpg' %}" alt="Modern Gold Living Room">
+                    </div>
+                    <div class="project-info">
+                        <h3>The Amber Lounge</h3>
+                        <p>Warm ambient lighting paired with custom feature walls.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="minimalist">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/living_room2.jpg' %}" alt="Minimalist White Living Room">
+                    </div>
+                    <div class="project-info">
+                        <h3>Serene Minimalist</h3>
+                        <p>Clean lines, geometric layouts, and hidden storage systems.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="modern-luxury">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/living_room3.jpg' %}" alt="Luxury Contemporary Space">
+                    </div>
+                    <div class="project-info">
+                        <h3>Metropolitan Elegance</h3>
+                        <p>High-end marble textures blended with velvet upholstery.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="cultural-statement">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/living_room4.jpg' %}" alt="Bright Open Concept Living">
+                    </div>
+                    <div class="project-info">
+                        <h3>The Open Sanctuary</h3>
+                        <p>Maximizing natural daylight with floor-to-ceiling glass layout.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Love This Style?</h2>
+            <p>Let's build a custom living space tailored entirely to your lifestyle.</p>
+            <a href="{% url 'contact' %}" class="cta-btn">Start Your Project</a>
+        </div>
+    </section>
+
+    <script>
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.project-card').forEach(card => {
+                    card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+{% endblock %}

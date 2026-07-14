@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Kitchen Portfolio | Cozy Designs{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'cozyy/Kitchen.css' %}">{% endblock %}
+
+{% block content %}
+    <section class="portfolio-intro">
+        <div class="container">
+            <h1>Culinary Excellence</h1>
+            <p>Explore our bespoke kitchen layouts blending high-end smart utility with stunning artistic natural textures.</p>
+
+            <div class="filter-bar">
+                <button class="filter-btn active" data-filter="all">All Kitchens</button>
+                <button class="filter-btn" data-filter="modern-chef">Modern Chef</button>
+                <button class="filter-btn" data-filter="compact-luxury">Compact Luxury</button>
+                <button class="filter-btn" data-filter="warm-culinary">Warm Culinary</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="portfolio-grid-section">
+        <div class="container">
+            <div class="portfolio-grid">
+
+                <div class="project-card" data-category="modern-chef">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/zac-gudakov-2M3QePaxX6E-unsplash.jpg' %}" alt="Modern Marble Kitchen">
+                    </div>
+                    <div class="project-info">
+                        <h3>The Onyx Island</h3>
+                        <p>Deep marble waterfall countertops meets concealed task lighting.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="warm-culinary">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/hans-bQTVoJHrkO0-unsplash.jpg' %}" alt="Warm Wood Accent Kitchen">
+                    </div>
+                    <div class="project-info">
+                        <h3>Nordic Hearth</h3>
+                        <p>Natural oak finishes mixed with pristine white seamless storage.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="modern-chef">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/dinesh-ramaswamy-p-sEkj6-hAM-unsplash.jpg' %}" alt="Industrial Luxury Kitchen">
+                    </div>
+                    <div class="project-info">
+                        <h3>Urban Bistro</h3>
+                        <p>Matte black fixtures combined with raw exposed beam framing.</p>
+                    </div>
+                </div>
+
+                <div class="project-card" data-category="compact-luxury">
+                    <div class="project-image">
+                        <img src="{% static 'cozyy/home-images/kitchen4.jpg' %}" alt="Bright Minimalist Kitchen">
+                    </div>
+                    <div class="project-info">
+                        <h3>The Bright Pavillion</h3>
+                        <p>Integrated premium smart appliances beneath crisp glass windows.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Elevate Your Kitchen?</h2>
+            <p>Let's map out a premium space designed around how you cook and entertain.</p>
+            <a href="{% url 'contact' %}" class="cta-btn">Start Your Project</a>
+        </div>
+    </section>
+
+    <script>
+        // Simple client-side filter for the category buttons
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                const filter = btn.dataset.filter;
+                document.querySelectorAll('.project-card').forEach(card => {
+                    card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'block' : 'none';
+                });
+            });
+        });
+    </script>
+{% endblock %}

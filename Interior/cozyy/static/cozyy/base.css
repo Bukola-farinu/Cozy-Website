@@ -1,0 +1,175 @@
+/* ===== GOOGLE FONTS ===== */
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Playfair+Display:wght@600;700&display=swap");
+
+/* ===== RESET ===== */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    color: #333333;
+    line-height: 1.6;
+    background-color: #faf8f5;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+h1, h2, h3 {
+    font-family: 'Playfair Display', serif;
+    font-weight: 600;
+    color: #222222;
+}
+
+/* ===== GRID HELPERS ===== */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+}
+
+/* ===== NAVBAR (shared across every inner page) ===== */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 5%;
+    background-color: rgba(255, 255, 255, 0.95);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.navbar .logo {
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 2px;
+}
+
+.navbar nav {
+    display: flex;
+    gap: 10px;
+}
+
+.navbar nav a {
+    text-decoration: none;
+    color: #333333;
+    background-color: rgba(0, 0, 0, 0.05);
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.navbar nav a:hover {
+    background-color: #222222;
+    color: #ffffff;
+}
+
+/* Mobile nav toggle (hamburger) */
+#nav-check {
+    display: none;
+}
+
+#nav-check-btn {
+    display: none;
+    font-size: 1.4rem;
+    cursor: pointer;
+}
+
+/* ===== CTA SECTION (shared) ===== */
+.cta-section {
+    padding: 100px 0;
+    text-align: center;
+    background-color: #ffffff;
+}
+
+.cta-section h2 {
+    font-size: 2.5rem;
+    margin-bottom: 15px;
+}
+
+.cta-section p {
+    font-size: 1.1rem;
+    color: #666666;
+    margin-bottom: 35px;
+}
+
+.cta-btn {
+    display: inline-block;
+    padding: 15px 40px;
+    background-color: #222222;
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    letter-spacing: 1px;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+.cta-btn:hover {
+    background-color: #d4af37;
+}
+
+/* ===== SHARED RESPONSIVE RULES ===== */
+@media (max-width: 900px) {
+    .grid-2 {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+    .grid-3 {
+        grid-template-columns: 1fr;
+        gap: 30px;
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        padding: 16px 5%;
+    }
+    #nav-check-btn {
+        display: block;
+    }
+    .navbar nav {
+        position: fixed;
+        top: 68px;
+        left: 0;
+        width: 100%;
+        background-color: #ffffff;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.35s ease;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .navbar nav a {
+        width: 100%;
+        text-align: center;
+        border-radius: 0;
+        padding: 14px 0;
+        background: none;
+    }
+    #nav-check:checked ~ nav {
+        max-height: 300px;
+    }
+    .cta-section h2 {
+        font-size: 2rem;
+    }
+}

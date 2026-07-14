@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cozy Designs{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'cozyy/base.css' %}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <header class="navbar">
+        <div class="logo">COZY DESIGNS</div>
+        <input type="checkbox" id="nav-check">
+        <label for="nav-check" id="nav-check-btn">☰</label>
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+            <a href="{% url 'about' %}">About Us</a>
+            <a href="{% url 'living_room' %}">Living Room</a>
+            <a href="{% url 'kitchen' %}">Kitchen</a>
+            <a href="{% url 'contact' %}">Contact</a>
+        </nav>
+    </header>
+
+    {% block content %}{% endblock %}
+
+</body>
+</html>

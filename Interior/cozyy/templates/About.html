@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}About Us | Cozy Designs{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'cozyy/About.css' %}">{% endblock %}
+
+{% block content %}
+    <section class="about-hero">
+        <div class="hero-overlay">
+            <h1>Designing Spaces You Never Want to Leave</h1>
+            <p>Bringing Your House <br> to the Home of Your Dreams</p>
+        </div>
+    </section>
+
+    <section class="story-section">
+        <div class="container grid-2">
+            <div class="story-text">
+                <h2>Our Story</h2>
+                <p>Every home tells a story; we ensure yours is written with elegance, comfort, and purpose. Founded on the belief that interior spaces deeply impact our daily well-being, <strong>Cozy Designs</strong> turns standard architectural layouts into highly personalized sanctuaries.</p>
+                <p>We do not believe in one-size-fits-all templates. Our team collaborates directly with you to understand your lifestyle, aesthetic goals, and functional needs.</p>
+            </div>
+            <div class="story-image">
+                <img src="{% static 'cozyy/home-images/microsoft-copilot-TFoO1yRRByA-unsplash.jpg' %}" alt="Cozy Interior Design Process">
+            </div>
+        </div>
+    </section>
+
+    <section class="pillars-section">
+        <div class="container">
+            <h2 class="section-title">What Sets Us Apart</h2>
+            <div class="grid-3">
+                <div class="pillar-card">
+                    <div class="icon">✨</div>
+                    <h3>Tailored Elegance</h3>
+                    <p>Every texture, lighting fixture, and furniture arrangement is custom-selected for your specific lifestyle.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="icon">📐</div>
+                    <h3>Seamless Execution</h3>
+                    <p>We handle the entire design pipeline from initial 3D conceptualization to final structural staging.</p>
+                </div>
+                <div class="pillar-card">
+                    <div class="icon">🛋️</div>
+                    <h3>Harmonious Design</h3>
+                    <p>We specialize in blending contemporary luxury trends with timeless architectural elements.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <h2>Ready to Transform Your Space?</h2>
+            <p>Let's collaborate to build the home of your dreams.</p>
+            <a href="{% url 'contact' %}" class="cta-btn">Book a Design Consultation</a>
+        </div>
+    </section>
+{% endblock %}
