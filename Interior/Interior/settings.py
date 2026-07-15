@@ -28,7 +28,8 @@ SECRET_KEY = config('SECRET_KEY', default = "django-insecure-#%o%1ttm5l%dz0lq(oq
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=True, cast=bool)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+# ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['cozy-website.onrender.com', '127.0.0.1', 'localhost']
 
 
 # Application definition
