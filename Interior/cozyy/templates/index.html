@@ -1,46 +1,57 @@
-{% extends "base.html" %}
-{% load static %}
+{% extends "base.html" %} {% load static %} {% block title %}Cozy Designs |
+Interior Design Studio{% endblock %} {% block extra_css %}<link
+  rel="stylesheet"
+  href="{% static 'cozyy/style.css' %}"
+/>{% endblock %} {% block content %}
+<section class="home-hero">
+  <div class="hero-overlay">
+    {% if user.is_authenticated %}
+    <p class="welcome-msg">Welcome back, {{ user.username }}!</p>
+    {% endif %}
+    <h1>
+      Bringing Your House <br />
+      to the Home of Your Dreams
+    </h1>
+    <p>
+      Thoughtful interiors that reflect how you live, entertain, and unwind.
+    </p>
+    <a href="{% url 'living_room' %}" class="cta-btn">Find Your Style</a>
+  </div>
+</section>
 
-{% block title %}Cozy Designs | Interior Design Studio{% endblock %}
-{% block extra_css %}<link rel="stylesheet" href="{% static 'cozyy/style.css' %}">{% endblock %}
+<section class="home-highlights">
+  <div class="container grid-3">
+    <div class="pillar-card">
+      <div class="icon">🛋️</div>
+      <h3>Living Rooms</h3>
+      <p>
+        Warm, statement-making spaces built around how your family actually
+        lives.
+      </p>
+      <a href="{% url 'living_room' %}">View Gallery →</a>
+    </div>
+    <div class="pillar-card">
+      <div class="icon">🍽️</div>
+      <h3>Kitchens</h3>
+      <p>
+        Smart, beautiful culinary spaces blending utility with luxury finishes.
+      </p>
+      <a href="{% url 'kitchen' %}">View Gallery →</a>
+    </div>
+    <div class="pillar-card">
+      <div class="icon">✨</div>
+      <h3>Full Projects</h3>
+      <p>End-to-end design, from concept to final staging.</p>
+      <a href="{% url 'about' %}">Learn More →</a>
+    </div>
+  </div>
+</section>
 
-{% block content %}
-    <section class="home-hero">
-        <div class="hero-overlay">
-            <h1>Bringing Your House <br> to the Home of Your Dreams</h1>
-            <p>Thoughtful interiors that reflect how you live, entertain, and unwind.</p>
-            <a href="{% url 'living_room' %}" class="cta-btn">Find Your Style</a>
-        </div>
-    </section>
-
-    <section class="home-highlights">
-        <div class="container grid-3">
-            <div class="pillar-card">
-                <div class="icon">🛋️</div>
-                <h3>Living Rooms</h3>
-                <p>Warm, statement-making spaces built around how your family actually lives.</p>
-                <a href="{% url 'living_room' %}">View Gallery →</a>
-            </div>
-            <div class="pillar-card">
-                <div class="icon">🍽️</div>
-                <h3>Kitchens</h3>
-                <p>Smart, beautiful culinary spaces blending utility with luxury finishes.</p>
-                <a href="{% url 'kitchen' %}">View Gallery →</a>
-            </div>
-            <div class="pillar-card">
-                <div class="icon">✨</div>
-                <h3>Full Projects</h3>
-                <p>End-to-end design, from concept to final staging.</p>
-                <a href="{% url 'about' %}">Learn More →</a>
-            </div>
-        </div>
-    </section>
-
-    <section class="cta-section">
-        <div class="container">
-            <h2>Ready to Transform Your Space?</h2>
-            <p>Let's collaborate to build the home of your dreams.</p>
-            <a href="{% url 'contact' %}" class="cta-btn">Book a Design Consultation</a>
-        </div>
-    </section>
+<section class="cta-section">
+  <div class="container">
+    <h2>Ready to Transform Your Space?</h2>
+    <p>Let's collaborate to build the home of your dreams.</p>
+    <a href="{% url 'contact' %}" class="cta-btn">Book a Design Consultation</a>
+  </div>
+</section>
 {% endblock %}

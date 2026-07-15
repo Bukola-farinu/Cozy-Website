@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Verify Your Email | Cozy Designs{% endblock %}
+{% block extra_css %}<link rel="stylesheet" href="{% static 'cozyy/auth.css' %}">{% endblock %}
+
+{% block content %}
+<main class="auth-section">
+    <div class="auth-card">
+        <h1>Verify Your Email</h1>
+        <p class="auth-subtitle">Enter the 6-digit code we sent to your email address.</p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="form-message {{ message.tags }}">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="POST" class="auth-form">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="id_otp_code">Verification Code</label>
+                {{ form.otp_code }}
+                {% if form.otp_code.errors %}<p class="field-error">{{ form.otp_code.errors.0 }}</p>{% endif %}
+            </div>
+            <button type="submit" class="submit-btn">Verify</button>
+        </form>
+
+        <form method="POST" action="{% url 'resend_otp' %}" style="margin-top: 15px;">
+            {% csrf_token %}
+            <button type="submit" class="link-btn">Resend Code</button>
+        </form>
+    </div>
+</main>
+{% endblock %}
