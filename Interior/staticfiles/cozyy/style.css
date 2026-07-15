@@ -1,0 +1,85 @@
+.home-hero {
+    height: 90vh;
+    background: linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+                url('/static/cozyy/home-images/Home.jpg') no-repeat center center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.hero-overlay {
+    color: #ffffff;
+    max-width: 700px;
+    padding: 0 20px;
+}
+
+.home-hero h1 {
+    font-size: 3.2rem;
+    color: #ffffff;
+    line-height: 1.25;
+    margin-bottom: 20px;
+}
+
+.home-hero p {
+    font-size: 1.2rem;
+    color: #f0f0f0;
+    margin-bottom: 30px;
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+}
+
+.home-highlights {
+    padding: 100px 0;
+    background-color: #f3ede4;
+}
+
+.home-highlights .pillar-card {
+    background-color: #ffffff;
+    padding: 40px 30px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.02);
+    transition: transform 0.3s ease;
+}
+
+.home-highlights .pillar-card:hover {
+    transform: translateY(-5px);
+}
+
+.home-highlights .icon {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+.home-highlights h3 {
+    font-size: 1.3rem;
+    margin-bottom: 12px;
+}
+
+.home-highlights p {
+    font-size: 0.95rem;
+    color: #666666;
+    margin-bottom: 15px;
+}
+
+.home-highlights a {
+    font-weight: 600;
+    color: #222222;
+    text-decoration: none;
+    font-size: 0.9rem;
+}
+
+.home-highlights a:hover {
+    color: #d4af37;
+}
+
+@media (max-width: 900px) {
+    .home-hero h1 { font-size: 2.2rem; }
+}
+
+@media (max-width: 480px) {
+    .home-hero { height: 70vh; }
+    .home-hero h1 { font-size: 1.8rem; }
+    .home-hero p { font-size: 1rem; }
+}

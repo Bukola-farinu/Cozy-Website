@@ -10,8 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
-from pathlib import Path
 import os
+import dj_database_url
+from pathlib import Path
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,10 +23,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-#%o%1ttm5l%dz0lq(oq)tvi@@(+#ylisac$(@9h9ccys&5bmr0"
+SECRET_KEY = config('SECRET_KEY', default = "django-insecure-#%o%1ttm5l%dz0lq(oq)tvi@@(+#ylisac$(@9h9ccys&5bmr0")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=True, cast=bool)
 
 ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -75,10 +78,13 @@ WSGI_APPLICATION = "Interior.wsgi.application"
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
-    }
+    # "default": {
+    #     "ENGINE": "django.db.backends.sqlite3",
+    #     "NAME": BASE_DIR / "db.sqlite3",
+    # }
+    'default': dj_database_url.config(
+        default=f'sqlite:///{BASE_DIR / "db.sqlite3"}'
+    )
 }
 
 
@@ -117,6 +123,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
 STATIC_URL = "static/"
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -128,7 +136,7 @@ EMAIL_USE_SSL = True
 EMAIL_USE_TLS = False
 
 # Your Credentials
-EMAIL_HOST_USER = os.environ.get("farinubukola1407@gmail.com")  # Your Gmail address
-EMAIL_HOST_PASSWORD = os.environ.get("noos wjwl rnvp hiof") 
+EMAIL_HOST_USER = config("EMAIL_HOST_USER")  # Your Gmail address
+EMAIL_HOST_PASSWORD = config("EMAIL_HOST_PASSWORD") 
 
-DEFAULT_FROM_EMAIL = os.environ.get("noreply@cozydesigns.com")
+DEFAULT_FROM_EMAIL = config('DEFAULT_FROM_EMAIL', default=EMAIL_HOST_USER)
