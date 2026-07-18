@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib.auth import login as auth_login, logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.core.mail import EmailMultiAlternatives
 
 from .forms import SignUpForm, LoginForm, OTPForm
 from .models import Profile
@@ -59,6 +60,27 @@ def Living_room(request):
     return render(request, 'Living_room.html')
 
 
+def send_otp_email(user, code):
+    subject = "Your Cozy Designs verification code"
+    plain_message = f"Hi {user.username},\n\nYour verification code is: {code}\n\nThis code expires in 10 minutes."
+
+    html_message = f"""
+    <div style="font-family: 'Segoe UI', Arial, sans-serif; max-width: 480px; margin: 0 auto; padding: 40px 30px; background-color: #faf8f5;">
+        <h2 style="color: #222222; margin-bottom: 10px;">Verify Your Email</h2>
+        <p style="color: #555555; font-size: 15px;">Hi {user.username},</p>
+        <p style="color: #555555; font-size: 15px;">Use the code below to verify your Cozy Designs account:</p>
+        <div style="background-color: #ffffff; border: 1px solid #e0dcd5; border-radius: 8px; padding: 25px; text-align: center; margin: 25px 0;">
+            <span style="font-size: 36px; font-weight: 700; letter-spacing: 10px; color: #222222;">{code}</span>
+        </div>
+        <p style="color: #888888; font-size: 13px;">This code expires in 10 minutes. If you didn't request this, you can safely ignore this email.</p>
+        <p style="color: #222222; font-weight: 600; margin-top: 30px;">— Cozy Designs</p>
+    </div>
+    """
+
+    msg = EmailMultiAlternatives(subject, plain_message, settings.DEFAULT_FROM_EMAIL, [user.email])
+    msg.attach_alternative(html_message, "text/html")
+    msg.send()
+
 def signup_view(request):
     if request.method == "POST":
         form = SignUpForm(request.POST)
@@ -72,16 +94,17 @@ def signup_view(request):
             code = profile.generate_otp()
             
             
-            send_mail(
-                subject="Verify your email — Cozy Designs",
-                message=f"Hi {user.username},\n\n"
-                        f"Your verification code is: {code}\n\n"
-                        f"This code expires in 10 minutes.\n\n"
-                        f"— Cozy Designs",
-                from_email=settings.DEFAULT_FROM_EMAIL,
-                recipient_list=[user.email],
-                fail_silently=False,
-            )
+            # send_mail(
+                # subject="Verify your email — Cozy Designs",
+                # message=f"Hi {user.username},\n\n"
+                #         f"Your verification code is: {code}\n\n"
+                #         f"This code expires in 10 minutes.\n\n"
+                #         f"— Cozy Designs",
+                # from_email=settings.DEFAULT_FROM_EMAIL,
+                # recipient_list=[user.email],
+                # fail_silently=False,
+            # )
+            send_otp_email(user, code)
 
             request.session["pending_user_id"] = user.id
             return redirect("verify_otp")
@@ -113,16 +136,18 @@ def verify_otp_view(request):
     if not user_id:
         messages.error(request, "Session expired. Please sign up again.")
         return redirect("signup")
+    
+    try:
+        profile = Profile.objects.get(user__id=user_id)
+    except Profile.DoesNotExist:
+        messages.error(request, "Something went wrong. Please sign up again.")
+        return redirect("signup")
 
     if request.method == "POST":
         form = OTPForm(request.POST)
         if form.is_valid():
             code = form.cleaned_data["otp_code"]
-            try:
-                profile = Profile.objects.get(user__id=user_id)
-            except Profile.DoesNotExist:
-                messages.error(request, "Something went wrong. Please sign up again.")
-                return redirect("signup")
+            
             if profile.otp_is_valid(code):
                 profile.email_verified = True
                 profile.otp_code = None
@@ -133,14 +158,16 @@ def verify_otp_view(request):
                 user.save()
 
                 del request.session["pending_user_id"]
-                messages.success(request, "Email verified! You can now log in.")
-                return redirect("login")
+                
+                auth_login(request, user)
+                messages.success(request, f"Welcome, {user.username}! Your email has been verified.")
+                return redirect("home")
             else:
                 messages.error(request, "Invalid or expired code. Please try again.")
     else:
         form = OTPForm()
         
-    return render(request, "verify_otp.html", {"form": form})
+    return render(request, "verify_otp.html", {"form": form, "email": profile.user.email})
 
 def resend_otp_view(request):
     user_id = request.session.get("pending_user_id")
@@ -152,13 +179,9 @@ def resend_otp_view(request):
         profile = Profile.objects.get(user__id=user_id)
         code = profile.generate_otp()
 
-        send_mail(
-            subject="Your new Cozy Designs verification code",
-            message=f"Your new verification code is: {code}\n\nThis code expires in 10 minutes.",
-            from_email=settings.DEFAULT_FROM_EMAIL,
-            recipient_list=[profile.user.email],
-            fail_silently=False,
-        )
+        
+        send_otp_email(profile.user, code)
+        
         messages.success(request, "A new code has been sent to your email.")
     except Profile.DoesNotExist:
         messages.error(request, "Something went wrong. Please sign up again.")

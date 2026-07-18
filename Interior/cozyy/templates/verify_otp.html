@@ -9,6 +9,7 @@
     <div class="auth-card">
         <h1>Verify Your Email</h1>
         <p class="auth-subtitle">Enter the 6-digit code we sent to your email address.</p>
+        <p class="auth-email">{{ email }}</p>
 
         {% if messages %}
             {% for message in messages %}
@@ -16,13 +17,22 @@
             {% endfor %}
         {% endif %}
 
-        <form method="POST" class="auth-form">
+        <form method="POST" class="auth-form" id="otp-form">
             {% csrf_token %}
-            <div class="form-group">
-                <label for="id_otp_code">Verification Code</label>
-                {{ form.otp_code }}
-                {% if form.otp_code.errors %}<p class="field-error">{{ form.otp_code.errors.0 }}</p>{% endif %}
+
+            <div class="otp-boxes">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
+                <input type="text" maxlength="1" class="otp-digit" inputmode="numeric" autocomplete="off">
             </div>
+
+            <input type="hidden" name="otp_code" id="otp_code_hidden">
+
+            {% if form.otp_code.errors %}<p class="field-error">{{ form.otp_code.errors.0 }}</p>{% endif %}
+
             <button type="submit" class="submit-btn">Verify</button>
         </form>
 
@@ -32,4 +42,42 @@
         </form>
     </div>
 </main>
+
+<script>
+    const boxes = document.querySelectorAll('.otp-digit');
+    const hiddenInput = document.getElementById('otp_code_hidden');
+    const form = document.getElementById('otp-form');
+
+    boxes.forEach((box, index) => {
+        box.addEventListener('input', () => {
+            box.value = box.value.replace(/[^0-9]/g, '');
+            if (box.value.length === 1 && index < boxes.length - 1) {
+                boxes[index + 1].focus();
+            }
+            updateHiddenInput();
+        });
+
+        box.addEventListener('keydown', (e) => {
+            if (e.key === 'Backspace' && box.value === '' && index > 0) {
+                boxes[index - 1].focus();
+            }
+        });
+
+        box.addEventListener('paste', (e) => {
+            e.preventDefault();
+            const pasted = (e.clipboardData || window.clipboardData).getData('text').replace(/[^0-9]/g, '');
+            pasted.split('').forEach((char, i) => {
+                if (boxes[i]) boxes[i].value = char;
+            });
+            updateHiddenInput();
+            boxes[Math.min(pasted.length, boxes.length - 1)].focus();
+        });
+    });
+
+    function updateHiddenInput() {
+        hiddenInput.value = Array.from(boxes).map(b => b.value).join('');
+    }
+
+    form.addEventListener('submit', updateHiddenInput);
+</script>
 {% endblock %}
